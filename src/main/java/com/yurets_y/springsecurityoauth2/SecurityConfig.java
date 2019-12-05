@@ -2,7 +2,6 @@ package com.yurets_y.springsecurityoauth2;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -39,8 +38,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/login**", "/webjars/**", "/error**","/js/**")
                 .permitAll()
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
                 .and().logout().logoutSuccessUrl("/").permitAll()
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
@@ -71,6 +69,15 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public FilterRegistrationBean<OAuth2ClientContextFilter> oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
+        FilterRegistrationBean<OAuth2ClientContextFilter> registration = new FilterRegistrationBean<OAuth2ClientContextFilter>();
+        registration.setFilter(filter);
+        registration.setOrder(-100);
+        return registration;
+    }
+
+
+    @Bean
     @ConfigurationProperties("facebook.client")
     public AuthorizationCodeResourceDetails facebook() {
         return new AuthorizationCodeResourceDetails();
@@ -80,14 +87,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @ConfigurationProperties("facebook.resource")
     public ResourceServerProperties facebookResource() {
         return new ResourceServerProperties();
-    }
-
-    @Bean
-    public FilterRegistrationBean<OAuth2ClientContextFilter> oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-        FilterRegistrationBean<OAuth2ClientContextFilter> registration = new FilterRegistrationBean<OAuth2ClientContextFilter>();
-        registration.setFilter(filter);
-        registration.setOrder(-100);
-        return registration;
     }
 
     @Bean

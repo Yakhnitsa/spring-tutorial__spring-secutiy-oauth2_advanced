@@ -1,7 +1,7 @@
 facebook:
     client:
       clientId: 1025933537747585
-      clientSecret: 5a18bf1e751a45b96aec54b31398edf3
+      clientSecret: ${facebookSecret}
       accessTokenUri: https://graph.facebook.com/oauth/access_token
       userAuthorizationUri: https://www.facebook.com/dialog/oauth
       tokenName: oauth_token
@@ -13,7 +13,7 @@ facebook:
 google:
     client:
       clientId: 792472175593-sqffupr4pd9q3vpc63q3mihbn1dq2dbr.apps.googleusercontent.com
-      clientSecret: U9LkmCfh4aDTQ_w66NkyMtzh
+      clientSecret: ${googleSecret}
       accessTokenUri: https://www.googleapis.com/oauth2/v4/token
       userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
       clientAuthenticationScheme: form
